@@ -5,76 +5,70 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
-public class GUI extends JFrame implements ActionListener{
-
-
-
-   /* public void run() {
-        frame.setSize(300, 500);
-        frame.setVisible(true);
-        frame.setLayout(null);
-        frame.setBackground(Color.WHITE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        search.setBounds(85, 50, 200, 30);
-       // search.setVisible(true);
-       // search.setLayout(null);
-        searchButton.setBounds(100,100,80,10);
-       // searchButton.setVisible(true);
-        //searchButton.setIcon(new ImageIcon("C:\\search.png"));
-
-        frame.add(searchButton);
-        frame.add(search);
-
-
-    }*/
-    JLabel lb = new JLabel();
-    JTextField textField = new JTextField();
-    Icon icon = new ImageIcon("C:\\srch.png");
-    JFrame frame = new JFrame();
+public class GUI implements ActionListener {
+    JTextArea jt;
     JButton btn1 = new JButton("Submit");
+    JTextField textField = new JTextField();
 
+    public GUI() {
+        run();
+    }
 
-   public void run(){
+   public void run() {
+       // TODO: make icon work, and in the future it must be in the resources folder.
+       // Icon icon = new ImageIcon("C:\\srch.png");
 
-       textField.setBounds(0, 0, 200, 30);
-
-       btn1.setBounds(315, 50, 100, 30);
-       btn1.setBackground(new Color(173, 37, 51));
-       btn1.setForeground(Color.white);
-       btn1.setOpaque(true);
-       btn1.setBorderPainted(false);
-       btn1.setVisible(true);
-       btn1.addActionListener(this);
-
-       frame.setTitle("Search Engine");
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       //frame.setResizable(false); //prevent frame from being resize
-       frame.setSize(850,420);
-       //frame.setResizable(false);
+       JFrame frame = new JFrame("Search Engine");
        frame.setVisible(true);
-       frame.setLayout(null);
+       frame.setSize(1080,720);
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-       ImageIcon image = new ImageIcon("C:\\logo.png");
-       frame.setIconImage(image.getImage()); //Change icon of frame
-       frame.getContentPane().setBackground(new Color(0x240115));
+       JPanel panel1 = new JPanel();
+       panel1.setBackground(Color.WHITE);
+       frame.add(panel1);
 
-       frame.add(lb);
-       frame.add(textField);
-       frame.add(btn1);
+       JLabel lb = new JLabel("Type in a word: ");
+       lb.setBackground(Color.yellow);
 
+       textField.setBounds(355, 0, 2000, 30);
+       textField.setText("Enter Your Words: ");
+       panel1.add(textField);
 
+       btn1.addActionListener(this);
+       panel1.add(btn1);
+
+       jt = new JTextArea(25,30);
+       jt.setVisible(false);
+       jt.setLocation(30,110);
+       jt.setSize(270,200);
+       jt.setBackground(new Color(255,255,240));
+       panel1.add(jt);
+
+       frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getSource()==btn1){
-           System.out.println(textField.getText());
-           SearchFiles sf = null;
-           sf = new SearchFiles();
-           sf.Search();
-       }
+       if(e.getSource() == btn1){
+           // TODO: add checks here.
+           SearchFiles sf = new SearchFiles();
 
+           try {
+               HashMap<String, Integer> occurrences = sf.Search(textField.getText());
+               //System.out.println(occurrences);
+               /*
+                   TODO: show in ui, and make it nice (use the element
+                    that you've just made and display them there with a for loop)
+               */
+
+           } catch (FileNotFoundException fileNotFoundException) {
+               // TODO: handle whenever file is not found.
+               System.out.println("File is not found.");
+           }
+
+           jt.setVisible(true);
+       }
     }
 }
