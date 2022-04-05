@@ -6,11 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import javax.swing.filechooser.*;
+
 
 public class GUI implements ActionListener {
-    JTextArea jt;
+    JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
     JButton btn1 = new JButton("Submit");
+    JButton btn2 = new JButton("Open");
     JTextField textField = new JTextField();
+
+    JLabel jLabel;
+    JTextArea jTextArea;
+    String path;
 
     public GUI() {
         run();
@@ -37,38 +44,60 @@ public class GUI implements ActionListener {
        panel1.add(textField);
 
        btn1.addActionListener(this);
-       panel1.add(btn1);
+       btn2.addActionListener(this);
 
-       jt = new JTextArea(25,30);
-       jt.setVisible(false);
-       jt.setLocation(30,110);
-       jt.setSize(270,200);
-       jt.setBackground(new Color(255,255,240));
-       panel1.add(jt);
+       jLabel = new JLabel("No file selected");
+
+       panel1.add(btn1);
+       panel1.add(btn2);
+       panel1.add(jLabel);
+
+       jTextArea = new JTextArea(25,30);
+       jTextArea.setVisible(false);
+       jTextArea.setLocation(30,110);
+       jTextArea.setSize(270,200);
+       jTextArea.setBackground(new Color(255,255,240));
+       panel1.add(jTextArea);
 
        frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       if(e.getSource() == btn1){
-           // TODO: add checks here.
-           SearchFiles sf = new SearchFiles();
+        if (e.getSource() == btn1) {
+            // TODO: add checks here.
+            SearchFiles sf = new SearchFiles(path);
 
-           try {
-               HashMap<String, Integer> occurrences = sf.Search(textField.getText());
-               //System.out.println(occurrences);
-               /*
-                   TODO: show in ui, and make it nice (use the element
-                    that you've just made and display them there with a for loop)
-               */
+            try {
+                HashMap<String, Integer> occurrences = sf.Search(textField.getText());
+                String s = String.format("\nThe word %s appears in the following:\n", textField.getText());
+                jTextArea.append(s);
 
-           } catch (FileNotFoundException fileNotFoundException) {
-               // TODO: handle whenever file is not found.
-               System.out.println("File is not found.");
-           }
+                occurrences.forEach((key, value) -> {
+                    String formattedString = String.format("%s - %ox\n", key, value);
+                    jTextArea.append(formattedString);
+                });
 
-           jt.setVisible(true);
-       }
+            } catch (FileNotFoundException fileNotFoundException) {
+                // TODO: handle whenever file is not found.
+                System.out.println("File is not found.");
+            }
+
+            jTextArea.setVisible(true);
+        } else if (e.getSource() == btn2) {
+            jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int r = jFileChooser.showSaveDialog(null);
+
+            if (r == JFileChooser.APPROVE_OPTION) {
+                // set the label to the path of the selected directory
+                String selectedPath = jFileChooser.getSelectedFile().getAbsolutePath();
+                jLabel.setText(selectedPath);
+                path = selectedPath;
+
+                return;
+            }
+
+            jLabel.setText("The user cancelled the operation");
+        }
     }
 }

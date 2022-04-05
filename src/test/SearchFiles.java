@@ -4,9 +4,11 @@ import java.io.*;
 import java.util.HashMap;
 
 public class SearchFiles {
-    // TODO: path must be dynamic (i.e asking the user for the path.)
-    String path = "C:\\Users\\gamin\\SearchEngine\\src\\test\\Database";
-    File f1 = new File(path);
+    File f1;
+
+    public SearchFiles(String path) {
+        f1 = new File(path);
+    }
 
     public HashMap<String, Integer> Search(String searchQuery) throws FileNotFoundException {
         HashMap<String, Integer> fileOccurrences = new HashMap<>();
