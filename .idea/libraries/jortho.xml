@@ -1,8 +1,6 @@
 <component name="libraryTable">
   <library name="jortho">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/test/jortho.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>
