@@ -1,4 +1,8 @@
-package test;
+/*
+Author: Owen Ramkurrun
+Project:
+ */
+package SearchEngine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,16 +10,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 import javax.swing.filechooser.*;
 
+
+//Start of GUI Class
 public class GUI implements ActionListener {
+
+    /*
+     * Here we initialize the GUI
+     */
     JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
     JButton btn1 = new JButton("SUBMIT");
     JButton btn2 = new JButton("OPEN");
     JButton btn3 = new JButton("CLEAR");
+
     JTextField textField = new JTextField();
     JPanel panel = new JPanel();
     List<JCheckBox> checkBoxes = new ArrayList<>();
@@ -27,10 +37,12 @@ public class GUI implements ActionListener {
     JScrollPane scroll;
     JTextArea jTextArea;
 
+    //METHOD RUN
     public GUI() {
         run();
     }
 
+    //Start of Design of the GUI
    public void run() {
        // TODO: make icon work, and in the future it must be in the resources folder.
 
@@ -88,16 +100,14 @@ public class GUI implements ActionListener {
        frame.setVisible(true);
     }
 
-   /* public void initialiseSpellChecker(){
-        String userDictionaryPath = "\\dictionary";
-        SpellChecker.setUserDictionaryProvider(new FileUserDictionary(userDictionaryPath));
-        SpellChecker.registerDictionaries(getClass().getResource(userDictionaryPath), "en");
-        SpellChecker.register(textField);
-        SpellChecker.register(jTextArea);
-    }*/
-
     @Override
+    //Button Action
     public void actionPerformed(ActionEvent e) {
+        /*
+         * Over here we get the action for BUTTON 1
+         * It checks if the text field is empty and if the
+         * user has selected a directory path.
+         */
         if (e.getSource() == btn1) {
             if (textField.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Please enter a search query");
@@ -109,6 +119,10 @@ public class GUI implements ActionListener {
                 return;
             }
 
+            /*
+             * Here is where we get the search entry and
+             * search through the files from the selected path
+             */
             try {
                 Map<String, Integer> occurrences = sf.Search(textField.getText());
                 String s = String.format("\nThe word %s appears in the following:\n", textField.getText());
@@ -116,13 +130,13 @@ public class GUI implements ActionListener {
 
                 int index = 0;
 
+                //Iterates for each entry
                 for (Map.Entry<String, Integer> set : occurrences.entrySet()) {
                     String key = set.getKey();
                     Integer value = set.getValue();
 
                     String formattedString = switch (index) {
-                        case 0 -> String.format("Strongest link %s - %ox\n", key, value);
-                        case 1 -> String.format("Second strongest link %s - %ox\n", key, value);
+                        case 0 -> String.format("Strongest link:- %s - %ox\n", key, value);
                         default -> String.format("%s - %ox\n", key, value);
                     };
 
@@ -133,6 +147,11 @@ public class GUI implements ActionListener {
                 JOptionPane.showMessageDialog(frame, fileNotFoundException.getMessage());
             }
 
+            /*
+             *This is where we ask the user to select their
+             * own directory and also add each file
+             * in that directory to a checkbox.
+             */
         } else if (e.getSource() == btn2) {
             jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int r = jFileChooser.showOpenDialog(null);
@@ -149,8 +168,10 @@ public class GUI implements ActionListener {
                 }
 
                 File fileObj = new File(path);
+                //Checks directory with only files that ends with .txt
                 File[] files = fileObj.listFiles((dir, name) -> name.endsWith(".txt"));
 
+                //Adding file to checkbox
                 if (files != null) {
                     for (File file : files) {
                         JCheckBox checkBox = new JCheckBox(file.getName());
@@ -161,11 +182,17 @@ public class GUI implements ActionListener {
                     }
                 }
             }
+            /*
+             * Button 3 is a simple clear
+             * for the Search Area and
+             * Result Area
+             */
         } else if(e.getSource() == btn3) {
             textField.setText("");
             jTextArea.setText("");
         }
 
+        //This is where we can filter the checkbox and choose each file we want to edit
         if (e.getSource().getClass() == JCheckBox.class) {
             JCheckBox checkBox = (JCheckBox)e.getSource();
 
