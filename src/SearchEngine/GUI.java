@@ -1,6 +1,9 @@
 /*
-Author: Owen Ramkurrun
-Project:
+ *Author: Owen Ramkurrun
+ *Project: This project is a simple search engine that will
+ *search through a folder of text files with the words or sentence you enter.
+ *It will then show which text file has the highest link. It will display from
+ *highest to lowest.
  */
 package SearchEngine;
 
@@ -29,12 +32,14 @@ public class GUI implements ActionListener {
     JTextField textField = new JTextField();
     JPanel panel = new JPanel();
     List<JCheckBox> checkBoxes = new ArrayList<>();
+    JCheckBox checkBox;
 
     SearchFiles sf;
     JFrame frame;
     JLabel jLabel;
     String path;
     JScrollPane scroll;
+    JScrollPane scroll1;
     JTextArea jTextArea;
 
     //METHOD RUN
@@ -49,7 +54,7 @@ public class GUI implements ActionListener {
        JFrame frame = new JFrame("Search Engine");
        frame.setVisible(true);
        frame.setSize(400,550);
-       frame.setResizable(false);
+       frame.setResizable(true);
        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
        panel.setBackground(new Color(41, 50, 65));
@@ -84,6 +89,8 @@ public class GUI implements ActionListener {
        panel.add(btn3);
        panel.add(btn2);
        panel.add(jLabel);
+       
+       
 
        jTextArea = new JTextArea(25,30);
        jTextArea.setVisible(true);
@@ -93,9 +100,11 @@ public class GUI implements ActionListener {
        jTextArea.setBorder(null);
        jTextArea.setLineWrap(true);
        jTextArea.setWrapStyleWord(true);
+       
 
        scroll = new JScrollPane(jTextArea);
        panel.add(scroll);
+ 
 
        frame.setVisible(true);
     }
@@ -166,6 +175,7 @@ public class GUI implements ActionListener {
                     panel.removeAll();
                     checkBoxes.clear();
                 }
+                
 
                 File fileObj = new File(path);
                 //Checks directory with only files that ends with .txt
@@ -174,7 +184,7 @@ public class GUI implements ActionListener {
                 //Adding file to checkbox
                 if (files != null) {
                     for (File file : files) {
-                        JCheckBox checkBox = new JCheckBox(file.getName());
+                        checkBox = new JCheckBox(file.getName());
                         checkBox.setBounds(100,100, 50,50);
                         checkBox.addActionListener(this);
 

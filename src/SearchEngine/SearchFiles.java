@@ -1,8 +1,10 @@
 /*
-Author: Owen Ramkurrun
-Project:
+ *Author: Owen Ramkurrun
+ *Project: This project is a simple search engine that will
+ *search through a folder of text files with the words or sentence you enter.
+ *It will then show which text file has the highest link. It will display from
+ *highest to lowest.
  */
-
 package SearchEngine;
 
 //Imports
@@ -41,6 +43,7 @@ public class SearchFiles {
 
             //Get occurrences for the word the user searched
             int occurrences = 0;
+            int i = 0;
             BufferedReader inputStream = new BufferedReader(new FileReader(file));
 
             try {
