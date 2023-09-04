@@ -3,8 +3,6 @@ SearchEngine Project 04/15/2022
 This project is a simple Search Engine that searches through a directory with multiple text files. You type the word or sentences and it will
 show the highest linked result.
 
-Youtube video example: https://www.youtube.com/watch?v=aV72db_6fZk
-
 Text Example:
 ![image](https://user-images.githubusercontent.com/72156064/163586935-640caa98-9142-4a1e-bd0b-d0f1cd109d6c.png)
 
